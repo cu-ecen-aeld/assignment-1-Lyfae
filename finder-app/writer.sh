@@ -10,11 +10,31 @@ fi
 writedir="$1"
 string="$2"
 
-# create dir if it doesn't ecist
-mkdir -p "$(writedir "$string")"
+# create file if it doesn't exist
+# extract the dir first
+dir_path=$(dirname "$writedir")
+mkdir -p "$dir_path"
+
+if [ $? -ne 0 ]; then
+    echo "Error: creating dir failed"
+    exit 1
+fi
+
+# create file
+touch "$writedir"
+
+if [ $? -ne 0 ]; then
+    echo "Error: creating file failed"
+    exit 1
+fi
 
 # write/overwrite to file
 echo "$string" > "$writedir"
+
+if [ $? -ne 0 ]; then
+    echo "Writing to file failed"
+    exit 1
+fi
 
 # check if file is create successfully
 if [ $? -ne 0 ]; then

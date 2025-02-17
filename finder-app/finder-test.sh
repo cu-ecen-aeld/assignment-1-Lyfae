@@ -7,7 +7,7 @@ set -u
 
 NUMFILES=10
 WRITESTR=AELD_IS_FUN
-WRITEDIR=./
+WRITEDIR=/tmp/aeld-data
 username=$(cat conf/username.txt)
 
 if [ $# -lt 3 ]
@@ -60,14 +60,14 @@ done
 OUTPUTSTRING=$(./finder.sh "$WRITEDIR" "$WRITESTR")
 
 # remove temporary directories
-# rm -rf /tmp/aeld-data
+rm -rf /tmp/aeld-data
 
-# set +e
-# echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
-# if [ $? -eq 0 ]; then
-# 	echo "success"
-# 	exit 0
-# else
-# 	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found"
-# 	exit 1
-# fi
+set +e
+echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
+if [ $? -eq 0 ]; then
+	echo "success"
+	exit 0
+else
+	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found"
+	exit 1
+fi

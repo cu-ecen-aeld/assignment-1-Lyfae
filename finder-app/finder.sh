@@ -10,12 +10,15 @@ fi
 filedir="$1"
 searchstr="$2"
 
-# check if dir exists
-if [ ! -d "$filedir" ]; then
-    echo "Error: The directory '$filedir' does not exist in the filesystem"
-    exit 1
-fi
+filepath=$(find "$filedir" -type f)
 
-grep -r "$searchstr" "$filedir"
+files(){
+    echo "$filepath" | wc -l
+}
 
+lines() {
+    echo "$filepath" |xargs cat|grep -c "$searchstr"
+}
+
+echo "The number of files are $(files) and the number of matching lines are $(lines)"
 
